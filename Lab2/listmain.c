@@ -95,32 +95,88 @@ static char* test_First() {
 }
 
 static char* test_Next() {
-    // mu_assert("");
+    DLList* list = createDLList();
+    push(list, 1);
+    push(list, 2);
+    push(list, 3); // list = [3, 2, 1]
+
+    first(list); // set current to first element
+    mu_assert("Error: current should be 3", getCurrent(list) == 3);
+
+    next(list); // move to the next element
+    mu_assert("Error: current should be 2", getCurrent(list) == 2);
+
     return 0;
 }
 
 static char* test_AtEnd() {
-    // mu_assert("");
+    DLList* list = createDLList();
+    push(list, 1);
+    push(list, 2);
+
+    first(list); // set current to first element
+    next(list); // move to the next element
+    next(list); // move to the next element, which should be NULL
+
+    mu_assert("Error: should be at end", atEnd(list));
+
     return 0;
 }
 
 static char* test_DeleteCurrent() {
-    // mu_assert("");
+    DLList* list = createDLList();
+    push(list, 1);
+    push(list, 2);
+    push(list, 3); // list = [3, 2, 1]
+
+    first(list); // set current to first element
+    next(list);  // move to the next element
+
+    deleteCurrent(list); // delete current element, which is 2
+
+    mu_assert("Error: size should be 2", size(list) == 2);
+    mu_assert("Error: current should be 1", getCurrent(list) == 1);
+
     return 0;
 }
 
 static char* test_InsertAfter() {
-    // mu_assert("");
+    DLList* list = createDLList();
+    push(list, 1);
+    push(list, 2);
+
+    first(list); // set current to first element
+    insertAfter(list, 3); // list should now be [2, 3, 1]
+
+    mu_assert("Error: size should be 3", size(list) == 3);
+    next(list);
+    mu_assert("Error: current should be 3", getCurrent(list) == 3);
+
     return 0;
 }
 
 static char* test_InsertBefore() {
-    // mu_assert("");
+    DLList* list = createDLList();
+    push(list, 1);
+    push(list, 2);
+
+    first(list); // set current to first element
+    insertBefore(list, 3); // list should now be [3, 2, 1]
+
+    mu_assert("Error: size should be 3", size(list) == 3);
+    mu_assert("Error: current should be 2", getCurrent(list) == 2);
+
     return 0;
 }
 
 static char* test_PrintList() {
-    // mu_assert("");
+    DLList* list = createDLList();
+    push(list, 1);
+    push(list, 2);
+    push(list, 3); // list = [3, 2, 1]
+
+    printList(list);
+
     return 0;
 }
 

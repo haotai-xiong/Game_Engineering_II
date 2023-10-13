@@ -5,9 +5,9 @@
  * Author: Joseph
  * Maintainer: 
  * Created: Wed Oct  4 18:44:47 2023 (+0100)
- * Last-Updated: Wed Oct  4 20:39:12 2023 (+0100)
- *           By: Joseph
- *     Update #: 7
+ * Last-Updated: Thursday Oct 12 12:10:00 2023 (+0100)
+ *           By: Haotai Xiong C00265675
+ *     Update #: 9
  * 
  * Commentary: 
  * 
@@ -36,6 +36,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <limits.h>
 
 /**
 * node_t
@@ -66,7 +67,7 @@ struct DLList_t {
 * @return Pointer to the new list
 */
 DLList* createDLList() {
-	DLList* list;
+	DLList* list = (DLList*) malloc(sizeof(DLList));
 	list->first = NULL;
 	list->current = NULL;
 	list->size = 0;
@@ -91,7 +92,7 @@ int size(DLList *theList) {
 * @return The number of elements in the DLList
 */
 int push(DLList * theList, int newData) {
-	struct node_t* newNode;
+	struct node_t* newNode = (struct node_t*) malloc(sizeof(struct node_t));
 	newNode->data = newData;
 	newNode->next = theList->first;
 	newNode->prev = NULL;
@@ -99,8 +100,11 @@ int push(DLList * theList, int newData) {
 	if (theList->first != NULL) {
 		theList->first->prev = newNode;
 	}
+
 	theList->first = newNode;
-	theList->size++;
+	theList->current = newNode;
+	theList->size += 1;
+
 	return theList->size;
 }
 
@@ -112,7 +116,7 @@ int push(DLList * theList, int newData) {
 */
 int pop(DLList* theList) {
 	if (theList->first == NULL) {
-		return INT_MAX;
+		return -1;
 	}
 
 	int data = theList->first->data;
@@ -135,10 +139,12 @@ int pop(DLList* theList) {
 * @return The data at the current position- an integer
 */
 int getCurrent(DLList* theList) {
-	if (theList->current == NULL) {
+	if (theList->current != NULL) {
+		return theList->current->data;
+	}
+	else {
 		return INT_MAX;
 	}
-	return theList->current->data;
 }
 
 
@@ -171,7 +177,13 @@ void next(DLList *theList) {
 * @return true if current is at end otherwise false
 */
 bool atEnd(DLList *theList) {
-	return (theList->current->next == NULL);
+	if (theList->current != NULL)
+	{
+		return (NULL == theList->current->next);
+	}
+	else {
+		return false;
+	}
 }
 
 
@@ -213,7 +225,7 @@ int deleteCurrent(DLList* theList) {
 * @return void
 */
 void insertAfter(DLList* theList, int newData) {
-	struct node_t* newNode;
+	struct node_t* newNode = (struct node_t*) malloc(sizeof(struct node_t));
 	newNode->data = newData;
 
 	if (theList->current == NULL) {
@@ -244,7 +256,7 @@ void insertAfter(DLList* theList, int newData) {
 * @return void
 */
 void insertBefore(DLList* theList, int newData) {
-	struct node_t* newNode;
+	struct node_t* newNode = (struct node_t*) malloc(sizeof(struct node_t));
 	newNode->data = newData;
 
 	if (theList->current == NULL) {
@@ -281,7 +293,7 @@ void printList(DLList* theList) {
 	// char str[] result
 
 	while (temp != NULL) {
-		printf(temp->data);
+		printf("%d ", temp->data);
 		temp = temp->next;
 	}
 	printf("\n");
